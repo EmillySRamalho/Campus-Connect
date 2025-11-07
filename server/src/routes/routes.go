@@ -12,4 +12,5 @@ func SetupRoutes(r *gin.Engine){
 
 	auth := r.Group("/api")
 	auth.Use(middlewares.Auth())
+	auth.GET("/profile", controllers.Profile)
 }

@@ -11,7 +11,7 @@ import (
 
 func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		tokenString := strings.TrimPrefix(c.GetHeader("Authorization"), "Bearer")
+		tokenString := strings.TrimSpace(strings.TrimPrefix(c.GetHeader("Authorization"), "Bearer"))
 		if tokenString == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token não encontrado."})
 			c.Abort()
@@ -23,10 +23,16 @@ func Auth() gin.HandlerFunc {
 		})
 
 		if err != nil || !token.Valid {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token inválido."})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token inválido.", "detail": err.Error()})
 			c.Abort()
 			return
 		}
+
+		claims := token.Claims.(jwt.MapClaims)
+		userId := uint(claims["id"].(float64))
+
+		c.Set("userId", userId)
+
 
 		c.Next()
 	}
