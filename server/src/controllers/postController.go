@@ -57,6 +57,7 @@ func CreatePost(c *gin.Context){
 // Editar Postagem
 func EditPost(c *gin.Context) {
 	postId := c.Param("id")
+	userId := c.GetUint("userId")
 
 	// Converção do ID
 	postIdInt, err := strconv.Atoi(postId)
@@ -81,6 +82,11 @@ func EditPost(c *gin.Context) {
 	var post models.Post
 	if err := config.DB.Preload("Tags").First(&post, postIdInt).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Postagem não encontrada."})
+		return
+	}
+
+	if post.ID != userId {
+		c.JSON(http.StatusForbidden, gin.H{"error": err.Error()})
 		return
 	}
 

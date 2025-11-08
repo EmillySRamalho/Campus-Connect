@@ -4,12 +4,13 @@ import "time"
 
 
 type Comment struct {
-	ID			uint		`gorm:"primaryKey"`
-	UserId		uint	
-	PostId		uint	
+	ID			uint		   `gorm:"primaryKey"`
+	UserID		uint	
+	PostID		uint	
 	User		User	
-	Content 	string		`json:"content"`
-	CreatedAt	time.Time	`json:"created_at"`
+	Likes		[]LikeComment	`gorm:"foreignKey:CommentID"`
+	Content 	string		    `json:"content"`
+	CreatedAt	time.Time	    `json:"created_at"`
 }
 
 

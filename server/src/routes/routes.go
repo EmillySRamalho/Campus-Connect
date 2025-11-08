@@ -19,8 +19,12 @@ func SetupRoutes(r *gin.Engine){
 	auth.POST("/posts", controllers.CreatePost)
 	auth.GET("/posts", controllers.GetPosts)
 	auth.PATCH("/post/:id", controllers.EditPost)
+	auth.POST("/post/like", controllers.LikePost)
+	auth.DELETE("/post/unlike", controllers.UnLikePost)
 	
 	auth.POST("/post/:id/comments", controllers.CreateComment)
 	auth.PUT("/comment/:id", controllers.EditComment)
 	auth.GET("/post/:id/comments", controllers.GetComments)
+	auth.POST("/comment/like", controllers.LikeComments)
+	auth.DELETE("/comment/unlike", controllers.UnlikeComment)
 }

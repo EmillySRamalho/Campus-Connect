@@ -35,8 +35,8 @@ func CreateComment(c *gin.Context){
 	}
 
 	comment := models.Comment{
-		UserId: userId,
-		PostId: post.ID,
+		UserID: userId,
+		PostID: post.ID,
 		Content: body.Content,
 	}
 
