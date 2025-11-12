@@ -5,7 +5,7 @@ import "time"
 
 type Post struct{
 	ID			uint		`gorm:"primaryKey"`
-	UserId		uint		`json:"user_id"`
+	UserID		uint		`json:"user_id"`
 	Title		string		`json:"title"`
 	User		User
 	Content		string		`json:"content"`

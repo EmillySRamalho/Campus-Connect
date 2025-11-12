@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/LucasPaulo001/Campus-Connect/src/config"
-	"github.com/LucasPaulo001/Campus-Connect/src/models"
+	"github.com/LucasPaulo001/Campus-Connect/internal/models"
+	config "github.com/LucasPaulo001/Campus-Connect/internal/repository"
 	"github.com/gin-gonic/gin"
 )
 
@@ -84,7 +84,7 @@ func EditComment(c *gin.Context) {
 	}
 
 	if comment.ID != userId {
-		c.JSON(http.StatusForbidden, gin.H{"error": err.Error()})
+		c.JSON(http.StatusForbidden, gin.H{"error": "Permissão de edição negada."})
 		return
 	}
 

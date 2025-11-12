@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -28,11 +29,26 @@ func Auth() gin.HandlerFunc {
 			return
 		}
 
-		claims := token.Claims.(jwt.MapClaims)
-		userId := uint(claims["id"].(float64))
+		claims, ok := token.Claims.(jwt.MapClaims)
+		if !ok {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "erro ao ler token."})
+			c.Abort()
+		}
 
-		c.Set("userId", userId)
+		userId, ok := claims["id"].(float64)
+		if !ok {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "id do usuário inválido."})
+			c.Abort()
+		}
 
+		role, ok := claims["role"].(string)
+		if !ok {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "role do usuário inválido."})
+			c.Abort()
+		}
+
+		c.Set("userId", uint(userId))
+		c.Set("userRole", role)
 
 		c.Next()
 	}

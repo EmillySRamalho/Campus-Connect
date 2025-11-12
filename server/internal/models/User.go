@@ -9,5 +9,6 @@ type User struct {
 	Password  string	`json:"-"`
 	NameUser  string 	`gorm:"unique" json:"name_user"`
 	Bio		  string	`json:"bio,omitempty"`
+	Role  	  string 	`json:"role"`
 	CreatedAt time.Time	`json:"created_at"`	
 }

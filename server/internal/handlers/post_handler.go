@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/LucasPaulo001/Campus-Connect/src/config"
-	"github.com/LucasPaulo001/Campus-Connect/src/models"
+	"github.com/LucasPaulo001/Campus-Connect/internal/models"
+	config "github.com/LucasPaulo001/Campus-Connect/internal/repository"
 	"github.com/gin-gonic/gin"
 )
 
@@ -40,7 +40,7 @@ func CreatePost(c *gin.Context){
 
 	// Salvar Postagem
 	post := models.Post{
-		UserId: 	userId,
+		UserID: 	userId,
 		Title: 		body.Title,
 		Content: 	body.Content,
 		Tags: 		tags,		
@@ -68,8 +68,8 @@ func EditPost(c *gin.Context) {
 
 	// Dados da requisição
 	var body struct{
-		Title		string  `json:"title"`
-		Content 	string	`json:"content"`
+		Title		string  	`json:"title"`
+		Content 	string		`json:"content"`
 		Tags		[]string	`json:"tags"`
 	}
 
@@ -86,7 +86,7 @@ func EditPost(c *gin.Context) {
 	}
 
 	if post.ID != userId {
-		c.JSON(http.StatusForbidden, gin.H{"error": err.Error()})
+		c.JSON(http.StatusForbidden, gin.H{"error": "Permissão de edição negada."})
 		return
 	}
 
@@ -123,7 +123,7 @@ func EditPost(c *gin.Context) {
 }
 
 // Listagem de postagens do usuário
-func GetPosts(c *gin.Context){
+func GetPostsUser(c *gin.Context){
 	userId := c.GetUint("userId")
 
 	var posts []models.Post
@@ -138,3 +138,19 @@ func GetPosts(c *gin.Context){
 		
 	c.JSON(http.StatusOK, posts)
 }
+
+//Listagem de postagem do feed
+func GetPosts(c *gin.Context) {
+
+	var posts []models.Post
+
+	if err := config.DB.Preload("User").Find(&posts).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao listar postagens"})
+		return
+	}
+
+	c.JSON(http.StatusOK, posts)
+
+}
+
+

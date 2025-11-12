@@ -4,9 +4,9 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/LucasPaulo001/Campus-Connect/src/config"
-	"github.com/LucasPaulo001/Campus-Connect/src/models"
-	"github.com/LucasPaulo001/Campus-Connect/src/utils"
+	"github.com/LucasPaulo001/Campus-Connect/internal/models"
+	config "github.com/LucasPaulo001/Campus-Connect/internal/repository"
+	utils "github.com/LucasPaulo001/Campus-Connect/internal/service"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -97,7 +97,7 @@ func Login(c *gin.Context){
 		return
 	}
 
-	token, _ := utils.GenerateToken(user.ID)
+	token, _ := utils.GenerateToken(user.ID, user.Role)
 
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }

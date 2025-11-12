@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/LucasPaulo001/Campus-Connect/src/controllers"
-	"github.com/LucasPaulo001/Campus-Connect/src/middlewares"
+	"github.com/LucasPaulo001/Campus-Connect/internal/api/middlewares"
+	controllers "github.com/LucasPaulo001/Campus-Connect/internal/handlers"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,8 +16,9 @@ func SetupRoutes(r *gin.Engine){
 	auth.GET("/profile", controllers.Profile)
 	auth.PATCH("/profile", controllers.EditUserData)
 
-	auth.POST("/posts", controllers.CreatePost)
-	auth.GET("/posts", controllers.GetPosts)
+	auth.POST("/posts", middlewares.AuthorizeRole("admin", "professor"), controllers.CreatePost)
+	auth.GET("/posts", controllers.GetPostsUser)
+	auth.GET("/feed", controllers.GetPostsUser)
 	auth.PATCH("/post/:id", controllers.EditPost)
 	auth.POST("/post/like", controllers.LikePost)
 	auth.DELETE("/post/unlike", controllers.UnLikePost)

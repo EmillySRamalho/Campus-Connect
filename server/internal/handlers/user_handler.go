@@ -3,8 +3,8 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/LucasPaulo001/Campus-Connect/src/config"
-	"github.com/LucasPaulo001/Campus-Connect/src/models"
+	"github.com/LucasPaulo001/Campus-Connect/internal/models"
+	config "github.com/LucasPaulo001/Campus-Connect/internal/repository"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )

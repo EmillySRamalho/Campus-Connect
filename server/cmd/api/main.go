@@ -3,9 +3,10 @@ package main
 import (
 	"log"
 	"os"
-	"github.com/LucasPaulo001/Campus-Connect/src/config"
-	"github.com/LucasPaulo001/Campus-Connect/src/models"
-	"github.com/LucasPaulo001/Campus-Connect/src/routes"
+
+	"github.com/LucasPaulo001/Campus-Connect/internal/api/routes"
+	"github.com/LucasPaulo001/Campus-Connect/internal/models"
+	config "github.com/LucasPaulo001/Campus-Connect/internal/repository"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
