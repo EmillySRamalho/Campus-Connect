@@ -25,6 +25,10 @@ func main(){
 		&models.Comment{},
 		&models.LikePost{},
 		&models.LikeComment{},
+		&models.Group{},
+		&models.Member{},
+		&models.Teacher{},
+		&models.Student{},
 	)
 
 	router := gin.Default()

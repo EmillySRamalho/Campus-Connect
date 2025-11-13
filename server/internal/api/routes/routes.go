@@ -2,31 +2,34 @@ package routes
 
 import (
 	"github.com/LucasPaulo001/Campus-Connect/internal/api/middlewares"
-	controllers "github.com/LucasPaulo001/Campus-Connect/internal/handlers"
+	"github.com/LucasPaulo001/Campus-Connect/internal/handlers"
 	"github.com/gin-gonic/gin"
 )
 
 func SetupRoutes(r *gin.Engine){
-	r.POST("/register", controllers.Register)
-	r.POST("/login", controllers.Login)
+	r.POST("/register", handlers.Register)
+	r.POST("/login", handlers.Login)
 
 	auth := r.Group("/api")
 	auth.Use(middlewares.Auth())
 
-	auth.GET("/profile", controllers.Profile)
-	auth.PATCH("/profile", controllers.EditUserData)
+	auth.GET("/profile", handlers.Profile)
+	auth.PATCH("/profile", handlers.EditUserData)
 
-	auth.POST("/posts", middlewares.AuthorizeRole("admin", "professor"), controllers.CreatePost)
-	auth.GET("/posts", controllers.GetPostsUser)
-	auth.GET("/feed", controllers.GetPostsUser)
-	auth.PATCH("/post/:id", controllers.EditPost)
-	auth.POST("/post/like", controllers.LikePost)
-	auth.DELETE("/post/:id", controllers.DeletePost)
-	auth.DELETE("/post/unlike", controllers.UnLikePost)
+	auth.POST("/posts", middlewares.AuthorizeRole("admin", "professor"), handlers.CreatePost)
+	auth.GET("/posts", handlers.GetPostsUser)
+	auth.GET("/feed", handlers.GetPostsUser)
+	auth.PATCH("/post/:id", handlers.EditPost)
+	auth.POST("/post/like", handlers.LikePost)
+	auth.DELETE("/post/:id", handlers.DeletePost)
+	auth.DELETE("/post/unlike", handlers.UnLikePost)
 	
-	auth.POST("/post/:id/comments", controllers.CreateComment)
-	auth.PUT("/comment/:id", controllers.EditComment)
-	auth.GET("/post/:id/comments", controllers.GetComments)
-	auth.POST("/comment/like", controllers.LikeComments)
-	auth.DELETE("/comment/unlike", controllers.UnlikeComment)
+	auth.POST("/post/:id/comments", handlers.CreateComment)
+	auth.PUT("/comment/:id", handlers.EditComment)
+	auth.GET("/post/:id/comments", handlers.GetComments)
+	auth.POST("/comment/like", handlers.LikeComments)
+	auth.DELETE("/comment/unlike", handlers.UnlikeComment)
+
+	auth.POST("/become/teacher", handlers.BecomeTeacher)
+	auth.POST("/group/create", middlewares.AuthorizeRole("professor"), handlers.CreateGroup)
 }
