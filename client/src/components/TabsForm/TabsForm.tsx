@@ -1,19 +1,22 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import Link from "next/link";
+import { useAuthContext } from "@/contexts/AuthContext";
+import { Spinner } from "../ui/spinner";
 
 const loginSchema = z.object({
   email: z.string().email("E-mail inválido"),
@@ -24,7 +27,9 @@ const registerSchema = z
   .object({
     name: z.string().min(3, "Digite seu nome completo."),
     email: z.string().email("E-mail inválido"),
-    nameUser: z.string().min(3, "O nome de usuário deve ter pelo menos 3 caracteres."),
+    nameUser: z
+      .string()
+      .min(3, "O nome de usuário deve ter pelo menos 3 caracteres."),
     password: z.string().min(6, "A senha tem que ter no mínimo 6 caracteres."),
     confirmPassword: z
       .string()
@@ -36,6 +41,7 @@ const registerSchema = z
   });
 
 export function TabsDemo() {
+  const { loginFunc, loading, registerFunc } = useAuthContext();
 
   // Login
   const {
@@ -50,17 +56,20 @@ export function TabsDemo() {
   const {
     register: registerRegister,
     handleSubmit: handleRegisterSubmit,
-    formState: { errors: registerErrors }
+    formState: { errors: registerErrors },
   } = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
   });
 
-  const onLogin = (data: any) => {
-    console.log(data);
+  // Enviando dados para o contexto login
+  const onLogin = async (data: any) => {
+    await loginFunc(data.email, data.password);
   };
 
-  const onRegister = (data: any) => {
-    console.log("Cadastro:", data);
+  // Enviando dados para o contexto registro
+  const onRegister = async (data: any) => {
+    await registerFunc(data);
+    
   };
 
   return (
@@ -97,11 +106,25 @@ export function TabsDemo() {
                       {loginErrors.password.message}
                     </p>
                   )}
-                  <Button type="button" className="cursor-pointer text-neutral-500" variant={"link"}>
-                    Esqueci minha senha
-                  </Button>
+                  <Link href={"/forgout-pass"}>
+                    <Button
+                      type="button"
+                      className="cursor-pointer text-[15px] text-neutral-500"
+                      variant={"link"}
+                    >
+                      Esqueci minha senha
+                    </Button>
+                  </Link>
                 </div>
-                <Button className="cursor-pointer" type="submit">Login</Button>
+                <Button className="cursor-pointer w-full" type="submit">
+                  {loading ? (
+                    <span className="flex justify-center items-center gap-2">
+                      <Spinner /> Carregando...
+                    </span>
+                  ) : (
+                    <span>Login</span>
+                  )}
+                </Button>
               </form>
             </CardContent>
           </Card>
@@ -113,14 +136,19 @@ export function TabsDemo() {
               <CardDescription>Crie sua conta.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-6">
-              <form onSubmit={handleRegisterSubmit(onRegister)} className="space-y-4">
+              <form
+                onSubmit={handleRegisterSubmit(onRegister)}
+                className="space-y-4"
+              >
                 <div>
                   <Input
                     placeholder="Nome completo"
                     {...registerRegister("name")}
                   />
                   {registerErrors.name && (
-                    <p className="text-red-500 text-sm">{registerErrors.name.message}</p>
+                    <p className="text-red-500 text-sm">
+                      {registerErrors.name.message}
+                    </p>
                   )}
                 </div>
                 <div>
@@ -129,7 +157,9 @@ export function TabsDemo() {
                     {...registerRegister("nameUser")}
                   />
                   {registerErrors.nameUser && (
-                    <p className="text-red-500 text-sm">{registerErrors.nameUser.message}</p>
+                    <p className="text-red-500 text-sm">
+                      {registerErrors.nameUser.message}
+                    </p>
                   )}
                 </div>
                 <div>
@@ -139,7 +169,9 @@ export function TabsDemo() {
                     {...registerRegister("email")}
                   />
                   {registerErrors.email && (
-                    <p className="text-red-500 text-sm">{registerErrors.email.message}</p>
+                    <p className="text-red-500 text-sm">
+                      {registerErrors.email.message}
+                    </p>
                   )}
                 </div>
                 <div>
@@ -149,20 +181,35 @@ export function TabsDemo() {
                     {...registerRegister("password")}
                   />
                   {registerErrors.password && (
-                    <p className="text-red-500 text-sm">{registerErrors.password.message}</p>
+                    <p className="text-red-500 text-sm">
+                      {registerErrors.password.message}
+                    </p>
                   )}
                 </div>
                 <div>
                   <Input
-                  type="password"
+                    type="password"
                     placeholder="Confirme a senha"
                     {...registerRegister("confirmPassword")}
                   />
                   {registerErrors.confirmPassword && (
-                    <p className="text-red-500 text-sm">{registerErrors.confirmPassword.message}</p>
+                    <p className="text-red-500 text-sm">
+                      {registerErrors.confirmPassword.message}
+                    </p>
                   )}
                 </div>
-                <Button className="cursor-pointer" type="submit">Fazer Cadastro</Button>
+                <Button className="cursor-pointer w-full" type="submit">
+                  {
+                    loading ? (
+                      <span className="flex justify-center items-center gap-2">
+                        <Spinner />
+                        Registrando...
+                      </span>
+                    ) : (
+                      <span>Cadastro</span>
+                    )
+                  }
+                </Button>
               </form>
             </CardContent>
           </Card>
