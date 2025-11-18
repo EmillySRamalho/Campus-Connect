@@ -27,7 +27,7 @@ export default function PrivateLayout({
   return(
     <>
       <Navbar />
-      <div className="h-screen mt-10 pt-[var(--header-height)]">
+      <div className="mt-10 pt-[var(--header-height)]">
         {children}
       </div>
       <Footer />

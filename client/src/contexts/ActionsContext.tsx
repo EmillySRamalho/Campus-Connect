@@ -1,13 +1,15 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 
-import { loadPosts, likePosts } from "@/api/posts";
-import { IPost } from "@/types";
+import { loadPosts, likePosts, loadComments, removeLikePost } from "@/api/posts";
+import { IComment, IPost } from "@/types";
 
 interface IActionsContext {
     listPosts: (token: string) => Promise<any> 
     loadingAction: boolean
     posts: IPost[] | null
-    likeInPost: (user_id: number, post_id: number, token: string) => Promise<void>
+    likeInPost: (user_id: number | undefined, post_id: number, token: string) => Promise<void>
+    listComments: (post_id: number, token: string) => Promise<IComment[] | null>
+    unlikePost: (user_id: number | undefined, post_id: number, token: string) => Promise<void>
 }
 
 export const ActionContext = createContext<IActionsContext | null>(null);
@@ -23,7 +25,7 @@ export const ActionProvider = ({ children }: { children: React.ReactNode }) => {
         try{
             const res = await loadPosts(token);
             console.log(res);
-            setPosts(res);
+            setPosts(res.data);
         }
         catch(err: any){
             console.log(err);
@@ -34,23 +36,70 @@ export const ActionProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     // Like nos posts
-    const likeInPost = async (user_id: number, post_id: number, token: string) => {
+    const likeInPost = async (user_id: number | undefined, post_id: number, token: string) => {
         try{
-            const res = await likePosts(user_id, post_id, token);
-            console.log(res);
+            await likePosts(user_id, post_id, token);
+            // atualiza o estado global
+            setPosts(prev =>
+                prev?.map(post =>
+                    post.id === post_id
+                        ? {
+                            ...post,
+                            liked_by_me: true,
+                            likes_count: post.likes_count + 1
+                        }
+                        : post
+                ) || null
+            );
 
         }   
         catch(err: any){
             console.log(err);
         }
+    }
 
+    // Retirar like
+    const unlikePost = async (user_id: number | undefined, post_id: number, token: string) => {
+        try{
+            await removeLikePost(user_id, post_id, token);
+            setPosts(prev =>
+            prev?.map(post =>
+                post.id === post_id
+                    ? {
+                        ...post,
+                        liked_by_me: false,
+                        likes_count: post.likes_count - 1
+                    }
+                    : post
+            ) || null
+        );
+        }
+        catch(err: any){
+            console.log(err);
+        }
+    }
+
+    // Listagem de comentários de um post
+    const listComments = async (post_id: number, token: string) => {
+        try{
+            const res = await loadComments(post_id, token);
+
+            console.log(res);
+
+            return res;
+        }
+        catch(err: any){
+            console.log(err)
+        }
     }
 
     const contextValues = {
         listPosts,
         loadingAction,
         posts,
-        likeInPost
+        likeInPost,
+        listComments,
+        unlikePost
     }
 
     return(
