@@ -7,8 +7,9 @@ import { Button } from "../ui/button";
 import { useActionContext } from "@/contexts/ActionsContext";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { Comments } from "../Comments/Comments";
-import { likePosts } from "@/api/posts";
 import { convertDate } from "@/services/formateDate";
+import { MoreHorizontalIcon } from "lucide-react";
+import { CommentTools } from "../CommentTools/CommentTools";
 
 interface IPostCardProps {
   title: string;
@@ -18,6 +19,7 @@ interface IPostCardProps {
   author: IUser;
   postId: number;
   liked_by_me: boolean;
+  tagsPost: string[]
 }
 
 export const PostCard = ({
@@ -28,6 +30,7 @@ export const PostCard = ({
   postId,
   likes_count,
   liked_by_me,
+  tagsPost
 }: IPostCardProps) => {
   const [like, setLike] = useState(liked_by_me);
   const [likeCounts, setLikeCounts] = useState(likes_count);
@@ -36,32 +39,35 @@ export const PostCard = ({
 
   // Dar like
   const handleLike = async () => {
-    if(like){
+    if (like) {
       setLike(false);
       setLikeCounts((prev) => prev - 1);
       await unlikePost(user?.id, postId, token);
-    }
-    else {
+    } else {
       setLike(true);
       setLikeCounts((prev) => prev + 1);
       await likeInPost(user?.id, postId, token);
     }
-  }
+  };
 
   // Formatando data
   const date = convertDate(created_at);
 
   useEffect(() => {
     setLike(liked_by_me);
-  }, [liked_by_me])
+  }, [liked_by_me]);
 
   return (
-    <div className="bg-white mx-3 w-[90%] md:w-[50%] border rounded-xl shadow-sm p-4 space-y-4">
+    <div className="bg-white mx-3 w-[90%] md:w-[80%] border rounded-xl shadow-sm p-4 space-y-4">
       <div className="flex justify-between items-center">
         <span className="font-bold">
-          {author.name} - {author.role} - {like ? "true" : "false"} - { liked_by_me ? "true" : "false" }
+          {author.name} - {author.role} - {date}
         </span>
-        <span>{date}</span>
+        {user?.id === author.id && (
+          <span>
+            <CommentTools isPost={true} ID={postId} content={content} titlePost={title} tagsPost={tagsPost} />
+          </span>
+        )}
       </div>
       <hr />
       <div className="flex flex-col gap-5">
@@ -88,6 +94,12 @@ export const PostCard = ({
         <Button variant={"ghost"} className="cursor-pointer">
           <Comments post_id={postId} />
         </Button>
+      </div>
+      <hr />
+      <div>
+        {tagsPost && tagsPost.map((t) => (
+          <span>{t}</span>
+        ))}
       </div>
     </div>
   );

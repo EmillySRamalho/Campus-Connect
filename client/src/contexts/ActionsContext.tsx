@@ -8,8 +8,9 @@ interface IActionsContext {
     loadingAction: boolean
     posts: IPost[] | null
     likeInPost: (user_id: number | undefined, post_id: number, token: string) => Promise<void>
-    listComments: (post_id: number, token: string) => Promise<IComment[] | null>
+    listComments: (post_id: number | undefined, token: string) => Promise<IComment[] | null>
     unlikePost: (user_id: number | undefined, post_id: number, token: string) => Promise<void>
+    comment: IComment[] | null
 }
 
 export const ActionContext = createContext<IActionsContext | null>(null);
@@ -17,6 +18,7 @@ export const ActionContext = createContext<IActionsContext | null>(null);
 export const ActionProvider = ({ children }: { children: React.ReactNode }) => {
     const [loadingAction, setLoadingAction] = useState<boolean>(false);
     const [posts, setPosts] = useState<IPost[] | null>(null);
+    const [comment, setComments] = React.useState<IComment[] | null>(null);
 
 
     // Listar postagens do feed
@@ -80,11 +82,13 @@ export const ActionProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     // Listagem de comentários de um post
-    const listComments = async (post_id: number, token: string) => {
+    const listComments = async (post_id: number | undefined, token: string) => {
         try{
             const res = await loadComments(post_id, token);
 
             console.log(res);
+
+            setComments(res)
 
             return res;
         }
@@ -99,7 +103,8 @@ export const ActionProvider = ({ children }: { children: React.ReactNode }) => {
         posts,
         likeInPost,
         listComments,
-        unlikePost
+        unlikePost,
+        comment
     }
 
     return(

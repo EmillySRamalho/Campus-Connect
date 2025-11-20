@@ -18,7 +18,6 @@ import {
 import { FaRegCommentDots } from "react-icons/fa";
 import { useActionContext } from "@/contexts/ActionsContext";
 import { useAuthContext } from "@/contexts/AuthContext";
-import { IComment } from "@/types";
 import { Spinner } from "../ui/spinner";
 import { createComents } from "@/api/posts";
 import { convertDate } from "@/services/formateDate";
@@ -31,10 +30,10 @@ interface ICommentsProps {
 export function Comments({ post_id }: ICommentsProps) {
   const [text, setText] = React.useState("");
   const [open, setOpen] = React.useState(false);
-  const [comment, setComments] = React.useState<IComment[] | null>(null);
   const [loadingComments, setLoadingComments] = React.useState<boolean>(false);
   const [sending, setSending] = React.useState<boolean>(false);
-  const { listComments } = useActionContext();
+
+  const { listComments, comment } = useActionContext();
   const { token } = useAuthContext();
 
   const { user } = useAuthContext();
@@ -45,8 +44,7 @@ export function Comments({ post_id }: ICommentsProps) {
       if (!text.trim()) return;
 
       await createComents(text, post_id, token);
-      const data = await listComments(post_id, token);
-      setComments(data);
+      await listComments(post_id, token);
 
       setText("");
     } finally {
@@ -61,14 +59,14 @@ export function Comments({ post_id }: ICommentsProps) {
         setOpen(isOpen);
         if (isOpen) {
           setLoadingComments(true);
-          const data = await listComments(post_id, token);
-          setComments(data);
+          await listComments(post_id, token);
+
           setLoadingComments(false);
         }
       }}
     >
       <DrawerTrigger asChild>
-        <div className="cursor-pointer">
+        <div className="cursor-pointer flex gap-1.5">
           <FaRegCommentDots className="size-5" />
         </div>
       </DrawerTrigger>
@@ -102,7 +100,7 @@ export function Comments({ post_id }: ICommentsProps) {
                     <p className="text-sm font-semibold">
                       {c.User.name} - {convertDate(c.created_at)}
                     </p>
-                    {c.User.id === user?.id && <CommentTools ID={c.ID} content={c.content} />}
+                    {c.User.id === user?.id && <CommentTools ID={c.ID} isPost={false} content={c.content} post_id={post_id} />}
                   </span>
                   <p className="text-sm">{c.content}</p>
                 </div>

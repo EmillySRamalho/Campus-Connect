@@ -12,6 +12,7 @@ import {
   User,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { AiOutlinePartition } from "react-icons/ai";
 
 export const Navbar = () => {
   const itemsMobile = [
@@ -69,7 +70,10 @@ export const Navbar = () => {
       <nav className="h-full flex items-center justify-around px-4">
         <div>
           <Link href={"/"}>
-            <h1 className="text-[15px] md:text-2xl">Campus Connect</h1>
+            <h1 className="text-[20px] flex items-center gap-3 justify-center font-bold md:text-2xl">
+              <span>Campus <span className="text-blue-700">Connect</span></span>
+              <AiOutlinePartition />
+            </h1>
           </Link>
         </div>
         <div className="flex md:hidden">
@@ -88,7 +92,7 @@ export const Navbar = () => {
           <li>
             <Link
               className="flex w-[100px] px-2 py-2 hover:text-white hover:bg-blue-600 hover:transition hover:rounded-2xl flex-col items-center justify-center"
-              href={"#"}
+              href={"/explorer"}
             >
               <Compass />
               {!shrunk && <span className="text-xs mt-1">Explorar</span>}

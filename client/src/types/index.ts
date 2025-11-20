@@ -21,6 +21,7 @@ export interface IPost {
   likes_count: number;
   Likes: Like[];
   liked_by_me: boolean;
+  tags: string[]
 }
 
 export interface IComment {

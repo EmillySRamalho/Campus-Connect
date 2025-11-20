@@ -1,5 +1,31 @@
 import axiosInstace from "./axiosInstance";
-import { IPost } from "@/types";
+
+// Criar postagem
+export const addPost = async (title: string, content: string | undefined, token: string, tags?: string[]) => {
+  const res = await axiosInstace.post("/api/posts", 
+    { title, content, tags },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      } 
+    }
+  );
+
+  return res.data;
+}
+
+// Deletar postagens
+export const deletePost = async (post_id: number | undefined, token: string) => {
+  const res = await axiosInstace.delete(`/api/post/${post_id}`, 
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  return res.data;
+}
 
 // Listar postagens no feed
 export const loadPosts = async (token: string) => {
@@ -15,7 +41,7 @@ export const loadPosts = async (token: string) => {
 // Dar Like nos posts
 export const likePosts = async (
   user_id: number | undefined,
-  post_id: number,
+  post_id: number | undefined,
   token: string
 ) => {
   const res = await axiosInstace.post(
@@ -53,7 +79,7 @@ export const removeLikePost = async (
 };
 
 // Listar comentários de uma publicação
-export const loadComments = async (post_id: number, token: string) => {
+export const loadComments = async (post_id: number | undefined, token: string) => {
   const res = await axiosInstace.get(`/api/post/${post_id}/comments`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -86,7 +112,7 @@ export const createComents = async (
 
 // Editar comentário
 export const editComment = async (
-  commentId: number,
+  commentId: number | undefined,
   content: string,
   token: string
 ) => {
@@ -102,3 +128,4 @@ export const editComment = async (
 
   return res.data;
 };
+

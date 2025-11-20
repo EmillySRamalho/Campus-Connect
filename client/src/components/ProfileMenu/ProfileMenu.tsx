@@ -11,6 +11,7 @@ import {
 import { useAuthContext } from "@/contexts/AuthContext";
 import { User } from "lucide-react";
 import React, { useEffect } from "react";
+import { BiExit } from "react-icons/bi";
 
 type listItems = {
   item: string;
@@ -64,6 +65,7 @@ export function ProfileMenu({ items, iconProfile, shrunk }: IProfileMenuProps) {
               variant="destructive"
             >
               Sair
+              <BiExit />
             </Button>
           </SheetClose>
         </SheetFooter>
