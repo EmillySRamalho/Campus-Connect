@@ -24,3 +24,11 @@ type Saved_Posts struct {
 	Post 		Post 		`gorm:"foreignKey:PostID;constraint:OnDelete:CASCADE;"`
 	CreatedAt 	time.Time 	`json:"created_at"`
 }
+
+type PostTag struct {
+    PostID uint `gorm:"primaryKey"`
+    TagID  uint `gorm:"primaryKey"`
+
+    Post Post `gorm:"constraint:OnDelete:CASCADE;"`
+    Tag  Tags `gorm:"constraint:OnDelete:CASCADE;"`
+}
