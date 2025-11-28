@@ -61,6 +61,7 @@ func corsConfig(router *gin.Engine) {
 		AllowOrigins: 	[]string{
 			"http://localhost:5173",     // Vite
         	"http://localhost:3000",     // Next.js local
+			"https://campus-connect-chi-kohl.vercel.app", // Vercel
 		},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
     	AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
