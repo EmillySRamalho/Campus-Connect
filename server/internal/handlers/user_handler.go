@@ -54,6 +54,7 @@ func EditUserData(c *gin.Context){
 		c.JSON(http.StatusOK, gin.H{"message": "Dados atualizados com sucesso."})
 }
 
+// Modificação de role de usuário para professor
 func BecomeTeacher(c *gin.Context) {
 	userId := c.GetUint("userId")
 
@@ -100,6 +101,51 @@ func BecomeTeacher(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Perfil de professor criado com sucesso.",
 		"teacherId": teacher.UserID,
+	})
+}
+
+// Modificação de role de usuaário para estudante
+func BecomeStudent(c *gin.Context){
+	userId := c.GetUint("userId")
+
+	var body struct {
+		Curso 	string 	`json:"curso"`
+	}
+
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var user models.User
+	if err := config.DB.First(&user, userId).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if user.Role == "estudante" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "O usuário já é estudante."})
+		return
+	}
+
+	student := models.Student{
+		UserID:   	userId,
+		Course:     body.Curso,
+	}
+
+	if err := config.DB.Create(&student).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := config.DB.Model(&user).Update("role", "estudante").Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Perfil de estudante criado com sucesso.",
+		"studentId": student.UserID,
 	})
 }
 

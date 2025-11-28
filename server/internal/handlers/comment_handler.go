@@ -265,18 +265,34 @@ func GetResponses(c *gin.Context)  {
 		return
 	}
 
-	var responses []models.Resp_Comment
+	var resp_comment []models.Resp_Comment
 
 	err = config.DB.
 		Preload("User").
         Where("comment_id = ?", commentId).
         Order("created_at DESC").
-        Find(&responses).Error
+        Find(&resp_comment).Error
 
 	if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao listar respostas."})
         return
     }
+
+	var responses []dto.AnswerResponse
+	for _, resp := range resp_comment {
+		responses = append(responses, dto.AnswerResponse{
+			ID: 		resp.ID,
+			UserID: 	resp.UserID,
+			CommentID: 	resp.CommentID,
+			User:  		dto.UserInfo{
+				ID:    resp.User.ID,
+				Name:  resp.User.Name,
+				Email: resp.User.Email,
+				Role:  resp.User.Role,
+			},
+			Content: 	resp.Content,
+		})
+	}
 
     c.JSON(http.StatusOK, gin.H{
         "data": responses,

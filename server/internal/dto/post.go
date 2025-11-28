@@ -26,3 +26,11 @@ type CommentResponse struct {
     LikedByMe   bool        `json:"liked_by_me"`
     CreatedAt   time.Time   `json:"created_at"`
 }
+
+type AnswerResponse struct {
+    ID          uint        `json:"id"`
+    UserID      uint        `json:"user_id"`
+    CommentID   uint        `json:"comment_id"`
+    User        UserInfo    `json:"user"`
+    Content     string      `json:"content"`
+}
