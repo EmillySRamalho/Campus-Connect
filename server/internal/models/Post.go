@@ -4,13 +4,23 @@ import "time"
 
 
 type Post struct{
-	ID			uint		`gorm:"primaryKey"`
-	UserID		uint		`json:"user_id"`
-	Title		string		`json:"title"`
+	ID			uint			`gorm:"primaryKey"`
+	UserID		uint			`json:"user_id"`
+	Title		string			`json:"title"`
 	User		User
-	Content		string		`json:"content"`
-	Likes 		[]LikePost	`gorm:"foreignKey:PostID"`
-	Comments	[]Comment	`gorm:"foreignKey:PostID"`
-	Tags		[]Tags		`gorm:"many2many:post_tags"`
+	Content		string			`json:"content"`
+	Likes 		[]LikePost		`gorm:"foreignKey:PostID;constraint:OnDelete:CASCADE;"`
+	Comments	[]Comment		`gorm:"foreignKey:PostID;constraint:OnDelete:CASCADE;"`
+	Saves 		[]Saved_Posts	`gorm:"foreignKey:PostID;constraint:OnDelete:CASCADE;"`
+	Tags		[]Tags			`gorm:"many2many:post_tags"`
 	CreatedAt	time.Time
+}
+
+type Saved_Posts struct {
+	ID 			uint 		`gorm:"primaryKey json:id"`
+	UserID 		uint 		`json:"user_id"`
+	PostID		uint 		`json:"post_id"`
+	User 		User		`gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;"`
+	Post 		Post 		`gorm:"foreignKey:PostID;constraint:OnDelete:CASCADE;"`
+	CreatedAt 	time.Time 	`json:"created_at"`
 }

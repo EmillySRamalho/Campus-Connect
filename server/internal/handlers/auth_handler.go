@@ -124,6 +124,8 @@ func Profile(c *gin.Context){
 		"name":			user.Name,
 		"name_user":	user.NameUser,
 		"email":		user.Email,
+		"role": 		user.Role,
+		"bio": 			user.Bio,
 	})
 }
 
