@@ -71,7 +71,7 @@ export function ProfileMenu({ items, iconProfile, shrunk }: IProfileMenuProps) {
                 </span>
                 <hr />
                 <span className="mt-3"><strong>Biografia:</strong> 
-                {user?.bio === "" ? " Sem biografia" : user?.bio}</span>
+                {user?.bio === "" ? " Sem biografia" : " " + user?.bio}</span>
               </>
             )}
           </div>

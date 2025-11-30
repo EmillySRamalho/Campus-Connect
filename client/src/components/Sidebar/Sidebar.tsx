@@ -15,15 +15,22 @@ import {
 } from "@/components/ui/command";
 import { Dialogs } from "../Dialog/Dialog";
 import { useAuthContext } from "@/contexts/AuthContext";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 const title = {
   value: "Adicionar Postagem",
   icon: <FaPlusCircle />,
 };
 
-const titleGrout = {
+const titleGroup = {
   value: "Adicionar Turma",
   icon: <MdOutlineGroupAdd />,
+};
+
+const myGroups = {
+  value: "Minhas turmas",
+  icon: <MdGroups />,
 };
 
 export function Sidebar() {
@@ -52,12 +59,21 @@ export function Sidebar() {
                   type="createGroup"
                   title="Nova Turma"
                   label="Descrição"
-                  botton={titleGrout}
+                  botton={titleGroup}
                 />
               </CommandItem>
               <CommandItem>
-                <MdGroups />
-                <span>Minhas turmas</span>
+                <Link
+                  href={"/groups"}
+                >
+                  <Button
+                    variant={"ghost"}
+                    className="cursor-pointer"
+                  >
+                    <MdGroups />
+                    <span>Minhas turmas</span>
+                  </Button>
+                </Link>
               </CommandItem>
               <CommandItem>
                 <IoSchoolSharp />
@@ -67,15 +83,13 @@ export function Sidebar() {
           </>
         )}
 
-        {
-          user?.role === "estudante" && (
-            <CommandGroup>
-              <CommandItem>
-                <span>Minhas turmas</span>
-              </CommandItem>
-            </CommandGroup>
-          )
-        }
+        {user?.role === "estudante" && (
+          <CommandGroup>
+            <CommandItem>
+              <span>Minhas turmas</span>
+            </CommandItem>
+          </CommandGroup>
+        )}
 
         <CommandSeparator />
         <CommandGroup heading="Tarefas / Atividades Pendentes">
