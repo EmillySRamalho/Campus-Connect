@@ -14,11 +14,17 @@ interface Like {
 }
 
 export interface ITag {
-  ID: number,
-  Name: string
+  ID: number;
+  Name: string;
 }
 
-export type DialogType = "createPost" | "editPost" | "editResponse" | "createComment" | "editComment" | "createGroup";
+export type DialogType =
+  | "createPost"
+  | "editPost"
+  | "editResponse"
+  | "createComment"
+  | "editComment"
+  | "createGroup";
 
 export interface IPost {
   id: number;
@@ -29,7 +35,7 @@ export interface IPost {
   likes_count: number;
   Likes: Like[];
   liked_by_me: boolean;
-  tags: ITag[]
+  tags: ITag[];
 }
 
 export interface IComment {
@@ -46,4 +52,11 @@ export interface IResponsesComment {
   comment_id: number;
   content: string;
   created_at: string;
+}
+
+export interface IStudent {
+  UserID: number;
+  User: IUser;
+  course: string;
+  matricula: string;
 }

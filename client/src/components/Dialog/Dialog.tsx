@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { Input } from "../ui/input";
 import { DialogType, ITag } from "@/types";
 import Image from "next/image";
+import { CreateGroup } from "../CreateGroup/CreateGroup";
 
 interface IDialogsProps {
   content?: string | undefined;
@@ -159,7 +160,7 @@ export function Dialogs({
             </span>
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] z-[150]">
+        <DialogContent className="sm:max-w-[425px] z-150">
           <DialogTitle>{title}</DialogTitle>
           <DialogHeader></DialogHeader>
           <div className="grid gap-4">
@@ -178,42 +179,37 @@ export function Dialogs({
                 </div>
               )
             }
+
             {
-              type === "createGroup" && (
-                <div className="flex justify-center">
-                  <Image 
-                    src={"/turmas.svg"}
-                    alt="Imagem de turma"
-                    width={100}
-                    height={100}
-                    className="rounded-xl transform hover:scale-110 transition-all"
-                  />
-                </div>
+              (type === "createGroup") && (
+                <CreateGroup type="createGroup" />
               )
             }
 
             {/* Se for aberto para postagem ou edição de postagem insere titulo */}
-            {(type === "createPost" || type === "editPost" || type === "createGroup") && (
+            {(type === "createPost" || type === "editPost") && (
+              <>
               <div className="grid gap-3">
                 <Label htmlFor="title">Título*</Label>
                 <Input
-                  placeholder={type === "createGroup" ? "Nome da turma" : "Título do post"}
                   value={titlePostagem}
                   onChange={(e) => setTitlePost(e.target.value)}
                 />
               </div>
-            )}
+            
             <div className="grid gap-3">
               <Label htmlFor="content">
                 {label}
-                {(type === "createPost" || type === "editPost" || type === "createGroup") && "*"}
+                {(type === "createPost" || type === "editPost") && "*"}
               </Label>
               <Textarea
-                placeholder={type === "createGroup" ? "Descrição da turma" : "Novo conteúdo..."}
+                placeholder={type === "editPost" ?  "Novo conteúdo..." : "..."}
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
               />
             </div>
+            </>
+          )}
             {/* Se for aberto para postagem insere as tags */}
             {(type === "createPost" || type === "editPost") && (
               <div className="grid gap-3">
@@ -262,24 +258,6 @@ export function Dialogs({
                   </span>
                 ) : (
                   <span>Postar</span>
-                )}
-              </Button>
-            )}
-
-            {type == "createGroup" && (
-              <Button
-                className="cursor-pointer bg-blue-600 hover:bg-blue-700"
-                type="submit"
-                onClick={() => alert("criando grupo")}
-                disabled={loadingEdit}
-              >
-                {loadingEdit ? (
-                  <span className="flex justify-center items-center gap-1.5">
-                    <Spinner />
-                    <span>Criando</span>
-                  </span>
-                ) : (
-                  <span>Criar</span>
                 )}
               </Button>
             )}

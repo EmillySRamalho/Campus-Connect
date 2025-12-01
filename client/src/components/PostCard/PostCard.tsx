@@ -47,6 +47,8 @@ export const PostCard = ({
   const { likeInPost, unlikePost } = useActionContext();
   const { token, user } = useAuthContext();
 
+  const { listSavedPosts } = useActionContext();
+
   // Dar like
   const handleLike = async () => {
     if (like) {
@@ -63,6 +65,7 @@ export const PostCard = ({
   // Salvar postagens
   const handleSavePost = async () => {
     const data = await SavePosts(postId, token);
+    await listSavedPosts(token);
     console.log(data);
     toast.success(`${data.message}`);
   }

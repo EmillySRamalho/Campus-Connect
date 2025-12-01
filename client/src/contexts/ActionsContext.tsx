@@ -63,7 +63,6 @@ export const ActionProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Listar postagens salvas
     const listSavedPosts = async (token: string) => {
-        setLoadingAction(true);
         try{
             const data = await GetSavedPosts(token);
             console.log(data);
@@ -71,9 +70,6 @@ export const ActionProvider = ({ children }: { children: React.ReactNode }) => {
         }
         catch(err: any){
             console.log(err);
-        }
-        finally{
-            setLoadingAction(false);
         }
     }
 
