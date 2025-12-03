@@ -5,7 +5,6 @@ type Member struct {
 	StudentID uint    `json:"student_id"`
 	Student   Student `gorm:"foreignKey:StudentID;references:UserID"`
 	GroupID   uint    `json:"group_id"`
-	Group     Group   `gorm:"foreignKey:GroupID"`
 }
 
 

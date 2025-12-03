@@ -229,6 +229,65 @@ func ListMyGroups(c *gin.Context) {
 	})
 }
 
+// Listar grupo único
+func LoadGroup(c *gin.Context) {
+	groupIdStr := c.Param("id")
+	teacherId := c.GetUint("userId")
+
+	groupId, err := strconv.Atoi(groupIdStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var group models.Group
+
+	if err := config.DB.
+        Preload("Teacher").
+        Preload("Teacher.User").
+        Preload("Members").
+        Preload("Members.Student").
+        Preload("Members.Student.User").
+        Where("id = ? AND teacher_id = ?", groupId, teacherId).
+        First(&group).Error; err != nil {
+
+        c.JSON(http.StatusNotFound, gin.H{"error": "Grupo não encontrado ou você não tem acesso."})
+        return
+    }
+
+	var membersDto []dto.MemberResponse
+
+	for _, m := range group.Members {
+		membersDto = append(membersDto, dto.MemberResponse{
+			ID:        m.Student.UserID,
+			StudentID: m.StudentID,
+			Student: dto.StudentInfo{
+				Name: m.Student.User.Name,
+				Role: m.Student.User.Role,
+			},
+		})
+	}
+
+	response := dto.GroupResponse{
+		ID:  			group.ID,
+		Name: 			group.Name,
+		Description: 	group.Description,
+		TeacherID: 		teacherId,
+		Teacher: dto.TeacherResponse{
+			Departament: group.Teacher.Departament,
+			Formation:   group.Teacher.Formation,
+			User: 		 dto.UserInfo{
+				ID: 	group.Teacher.UserID,
+				Name: 	group.Teacher.User.Name,
+				Role:   group.Teacher.User.Role,
+			},	
+		},
+		Members: membersDto,
+	}
+
+    c.JSON(http.StatusOK, gin.H{"group": response})
+}
+
 // Adicionar estudantes
 func AddStudents(c *gin.Context) {
 	teacherId := c.GetUint("userId")
