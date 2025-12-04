@@ -58,6 +58,7 @@ export default function Groups() {
                           hover:border-blue-500 hover:shadow-xl hover:scale-[1.02]
                           transition-all duration-300
                           w-[90%]
+                          dark:bg-gray-800
                           h-full"
                   >
                     <span>

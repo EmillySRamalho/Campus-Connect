@@ -76,13 +76,15 @@ export default function GroupDetail() {
               </div>
               <hr className="my-3" />
               {group?.members.map((m) => (
-                <>
-                  <div key={m.id} className="flex items-center gap-1.5">
-                    <PiStudent />
-                    <span>{m.student.name}</span>
+               
+                  <div key={m.id}>
+                      <div className="flex items-center gap-1.5">
+                        <PiStudent />
+                        <span>{m.student.name}</span>
+                      </div>
+                      <hr className="my-3" />
                   </div>
-                  <hr className="my-3" />
-                </>
+            
               ))}
             </div>
           </TabsContent>

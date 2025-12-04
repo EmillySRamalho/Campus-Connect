@@ -19,7 +19,7 @@ import { Spinner } from "../ui/spinner";
 type listItems = {
   item: string;
   icon: React.ReactNode;
-  onClick?: () => void
+  onClick?: () => void;
 };
 
 interface IProfileMenuProps {
@@ -33,18 +33,15 @@ export function ProfileMenu({ items, iconProfile, shrunk }: IProfileMenuProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleRedirect = async (item: listItems) => {
-    if(item.onClick){
+    if (item.onClick) {
       item.onClick();
     }
 
-    setIsOpen(false)
-  }
+    setIsOpen(false);
+  };
 
   return (
-    <Sheet
-      open={isOpen}
-      onOpenChange={setIsOpen}
-    >
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <div className="cursor-pointer w-[100px] flex flex-col items-center justify-center">
           <User className="hidden md:flex" />
@@ -70,8 +67,10 @@ export function ProfileMenu({ items, iconProfile, shrunk }: IProfileMenuProps) {
                   {user?.role}
                 </span>
                 <hr />
-                <span className="mt-3"><strong>Biografia:</strong> 
-                {user?.bio === "" ? " Sem biografia" : " " + user?.bio}</span>
+                <span className="mt-3">
+                  <strong>Biografia:</strong>
+                  {user?.bio === "" ? " Sem biografia" : " " + user?.bio}
+                </span>
               </>
             )}
           </div>

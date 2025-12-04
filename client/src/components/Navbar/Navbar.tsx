@@ -118,7 +118,7 @@ export const NavbarClient = () => {
     <header
       className={`
         fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-sm
-        transition-all duration-300
+        transition-all duration-300 dark:bg-gray-800
         ${shrunk ? "h-12" : "h-20"}
       `}
     >
@@ -127,7 +127,7 @@ export const NavbarClient = () => {
           <Link href={"/"}>
             <h1 className="text-[20px] flex items-center gap-3 justify-center font-bold md:text-2xl">
               <span>
-                Campus <span className="text-blue-700">Connect</span>
+                Campus <span className="dark:text-blue-300 text-blue-600">Connect</span>
               </span>
               <AiOutlinePartition />
             </h1>
@@ -139,7 +139,7 @@ export const NavbarClient = () => {
         <ul className="hidden items-center md:flex md:justify-evenly md:w-[50%]">
           <li>
             <Link
-              className="flex w-[100px] px-2 py-2 hover:text-white hover:bg-blue-600 hover:transition hover:rounded-2xl flex-col items-center justify-center"
+              className="flex w-[100px] px-2 py-2 hover:text-white dark:hover:bg-blue-500 hover:bg-blue-600 hover:transition hover:rounded-2xl flex-col items-center justify-center"
               href={"/"}
             >
               <Home />

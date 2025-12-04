@@ -78,7 +78,7 @@ export const PostCard = ({
   }, [liked_by_me]);
 
   return (
-    <div className="bg-white mx-3 w-[90%] md:w-[80%] border rounded-xl shadow-sm p-2 space-y-4">
+    <div className="bg-white dark:bg-gray-800 mx-3 w-[90%] md:w-[80%] border rounded-xl shadow-sm p-2 space-y-4">
       <div className="flex justify-between items-center">
         <span className="font-bold text-[15px] flex items-center md:p-4 gap-6 justify-between md:gap-5 md:text-2xl">
           <User2Icon className="size-8" />
