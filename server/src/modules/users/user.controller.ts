@@ -1,5 +1,10 @@
 import { Response } from "express";
-import { LoginService, ProfileEditService, ProfileService, RegisterService } from "./user.service.js";
+import {
+  LoginService,
+  ProfileEditService,
+  ProfileService,
+  RegisterService,
+} from "./user.service.js";
 import { CustomRequest } from "../../middlewares/AuthGuard.js";
 
 // Registro
@@ -11,21 +16,20 @@ export async function RegisterController(req: CustomRequest, res: Response) {
 
     res.status(201).json(result);
   } catch (err: any) {
-    console.error(err);
+    res.status(500).json({ error: err.message });
   }
 }
 
 // Login
 export async function LoginController(req: CustomRequest, res: Response) {
-  try{
+  try {
     const { email, password } = req.body;
 
     const result = await LoginService(email, password);
 
     res.status(200).json(result);
-  }
-  catch(err: any){
-    console.log(err);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
   }
 }
 
@@ -35,17 +39,19 @@ export function ProfileController(req: CustomRequest, res: Response) {
   const result = ProfileService(user);
 
   res.status(200).json(result);
-
 }
 
 // Editar dados do prfil
 export async function ProfileEditController(req: CustomRequest, res: Response) {
-  const id = req.user._id;
+  try {
+    const id = req.user._id;
 
-  const updates = req.body;
+    const updates = req.body;
 
-  const result = await ProfileEditService(id, updates);
+    const result = await ProfileEditService(id, updates);
 
-  res.status(200).json(result);
-
+    res.status(200).json(result);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
 }

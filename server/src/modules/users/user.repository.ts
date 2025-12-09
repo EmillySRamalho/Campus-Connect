@@ -4,7 +4,7 @@ import userModel from "./user.model.js";
 
 export const UserRepository = {
     findById(id: string){
-        return userModel.findById(id);
+        return userModel.findById(id).populate("postsSaveds");
     },
 
     findByEmail(email: string){
@@ -27,5 +27,6 @@ export const UserRepository = {
 
     create(data: TUser){
         return userModel.create(data);
-    }
+    },
+
 }

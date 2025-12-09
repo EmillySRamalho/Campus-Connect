@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { TUser } from "../../types/user/user.type.js";
 
 const UserSchema = new mongoose.Schema<TUser>({
@@ -25,6 +25,11 @@ const UserSchema = new mongoose.Schema<TUser>({
         type: String,
         required: true,
     },
+
+    postsSaveds: [{
+        type: Schema.Types.ObjectId,
+        ref: "Post"
+    }],
 
     role: {
         type: String,

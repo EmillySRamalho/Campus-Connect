@@ -1,14 +1,14 @@
-import { Schema, Types } from "mongoose";
+import { Types } from "mongoose";
 
 type TResponse = {
   _id?: string;
-  author: Schema.Types.ObjectId | string;
+  author: Types.ObjectId | string;
   content: string;
 };
 
 type TComment = {
   _id?: string;
-  author: Schema.Types.ObjectId | string;
+  author: Types.ObjectId | string;
   content: string;
   responses?: TResponse[];
 };
@@ -29,7 +29,7 @@ export type TPost = {
   author: TAuthor | Types.ObjectId;
   content: string;
   tags?: string[];
-  likes?: Schema.Types.ObjectId[] | string;
+  likes?: Types.ObjectId[];
   comments?: TComment[];
   createdAt: Date;
 };

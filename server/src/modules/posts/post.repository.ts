@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import postModel from "./post.model.js";
-import { TCreatePostData } from "./post.service.js";
+import { TCreatePostData } from "./services/PostAction.service.js";
+import { TPost } from "../../types/post/post.type.js";
 
 export const PostRepository = {
   findAll() {
@@ -35,4 +36,9 @@ export const PostRepository = {
   deleteById(id: string) {
     return postModel.findByIdAndDelete(id);
   },
+
+  update(id: string, data: Partial<TPost>){
+    return postModel.findByIdAndUpdate(id, data, { new: true });
+  }
+
 };
