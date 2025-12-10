@@ -26,7 +26,9 @@ export async function CreatePostController(req: CustomRequest, res: Response) {
 export async function ListAllPostController(req: CustomRequest, res: Response) {
     try{
 
-        const result = ListAllPostService();
+        const userId = req.user._id;
+
+        const result = ListAllPostService(userId);
 
         res.status(200).json((await result).dataFormated);
 

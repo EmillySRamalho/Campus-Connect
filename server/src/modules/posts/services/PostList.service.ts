@@ -1,15 +1,26 @@
+import { Types } from "mongoose";
 import { TAuthor, TPost } from "../../../types/post/post.type.js";
 import { TeacherRepository } from "../../teacher/teacher.repository.js";
 import { UserRepository } from "../../users/user.repository.js";
+import postModel from "../post.model.js";
 import { PostRepository } from "../post.repository.js";
 
 // Listar postagens
-export async function ListAllPostService() {
+export async function ListAllPostService(userId: string) {
   const posts = await PostRepository.findAll();
+  const user = await UserRepository.findById(userId);
+
+  const savedIds = user?.postsSaveds || [];
 
   const dataFormated = posts.map((post) => {
     const author = post.author as TAuthor;
     const user = author?.user;
+
+    const userObjectId = new Types.ObjectId(userId);
+    const liked = post.likes?.some(id => id.equals(userObjectId));
+
+    const saved = savedIds.some(savedId =>
+      savedId.equals(post._id));
 
     return {
       id: post._id,
@@ -26,6 +37,8 @@ export async function ListAllPostService() {
       likes: post?.likes?.length,
       comments: post?.comments?.length,
       createdAt: post.createdAt,
+      liked: liked,
+      saved: saved
     };
   });
 
@@ -78,8 +91,20 @@ export async function ListSavePostsService(userId: string) {
     throw new Error("Usuário não encontrado.");
   }
 
-  const saveds = user?.postsSaveds?.map((post: any) => {
-    const author = post.author as TAuthor;
+  const savedIds = user.postsSaveds;
+
+  const posts = await postModel
+    .find({ _id: { $in: savedIds } })
+    .populate({
+      path: "author",
+      populate: {
+        path: "user",
+        select: "name email role",
+      },
+    });
+
+  const formatted = posts.map((post: any) => {
+    const author = post.author;
     const user = author?.user;
 
     return {
@@ -89,19 +114,19 @@ export async function ListSavePostsService(userId: string) {
       author: user
         ? {
             id: author._id,
-            name: author.user.name,
-            email: author.user.email,
-            role: author.user.role,
+            name: user.name,
+            email: user.email,
+            role: user.role,
           }
         : null,
-      likes: post?.likes?.length,
-      comments: post?.comments?.length,
+      likes: post.likes?.length || 0,
+      comments: post.comments?.length || 0,
       createdAt: post.createdAt,
     };
   });
 
   return {
-    posts: saveds,
+    posts: formatted,
   };
 }
 

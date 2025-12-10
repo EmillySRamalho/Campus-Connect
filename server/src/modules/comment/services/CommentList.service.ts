@@ -31,7 +31,8 @@ export async function ListCommentsByPostService(postId: string){
         role: author.role
       } : null,
       content: comment.content,
-      likes: comment.likes?.length
+      likes: comment.likes?.length,
+      createdAt: comment.createdAt
     }
   });
 

@@ -24,7 +24,7 @@ export type TAuthor = {
 };
 
 export type TPost = {
-  _id?: string;
+  _id?: Types.ObjectId;
   title: string;
   author: TAuthor | Types.ObjectId;
   content: string;

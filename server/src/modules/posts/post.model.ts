@@ -18,10 +18,10 @@ const PostSchema = new mongoose.Schema<TPost>({
         required: true
     },
 
-    comments: {
+    comments: [{
         type: Schema.Types.ObjectId,
         ref: "Comment"
-    },
+    }],
 
     tags: [{
         type: String

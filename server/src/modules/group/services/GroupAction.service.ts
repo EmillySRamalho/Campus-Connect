@@ -19,7 +19,7 @@ export async function CreateGroupService({authorId, name, description}: TData){
     }
 
     if(!name){
-        throw new Error("Nome inválid.");
+        throw new Error("Nome inválido.");
     }
 
     const authorObjectId = new Types.ObjectId(author._id);

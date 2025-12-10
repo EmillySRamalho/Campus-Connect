@@ -66,6 +66,7 @@ export function ProfileService(user: TUser) {
     id: user?._id,
     name: user.name,
     name_user: user.nameUser,
+    role: user.role,
     email: user.email,
   };
 
