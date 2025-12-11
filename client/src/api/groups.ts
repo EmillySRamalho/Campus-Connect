@@ -3,7 +3,7 @@ import axiosInstace from "./axiosInstance";
 
 // Listagem de grupos criados pelo professor
 export const LoadGroups = async (token: string) => {
-  const res = await axiosInstace.get("/api/group/list", {
+  const res = await axiosInstace.get("api/group/teacher/", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -14,7 +14,7 @@ export const LoadGroups = async (token: string) => {
 
 // Busca de estudantes
 export const SearchStudents = async (token: string, q: string) => {
-  const res = await axiosInstace.get(`/api/students/search?q=${q}`, {
+  const res = await axiosInstace.get(`/api/search/user?q=${q}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -27,11 +27,11 @@ export const SearchStudents = async (token: string, q: string) => {
 export const CreateNewGroup = async (
   name: string,
   description: string,
-  members: number[],
+  members: string[],
   token: string
 ) => {
   const res = await axiosInstace.post(
-    "/api/group/create",
+    "/api/group",
     {
       name,
       description,

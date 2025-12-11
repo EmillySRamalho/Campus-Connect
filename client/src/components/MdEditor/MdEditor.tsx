@@ -1,13 +1,14 @@
 "use client";
 
 import MDEditor from "@uiw/react-md-editor";
+import { Dispatch, SetStateAction } from "react";
 import rehypeSanitize from "rehype-sanitize";
 
 type MarkdownEditorProps = {
   labelText?: string;
   value: string | undefined;
-  setValue: React.Dispatch<React.SetStateAction<string | undefined>>;
-  textAreaName: string;
+  setValue: Dispatch<SetStateAction<string | undefined>>;
+  textAreaName?: string;
   disabled?: boolean;
 };
 
@@ -23,7 +24,7 @@ export function MarkdownEditor({
     <div data-color-mode={themeMode} className="w-full space-y-3">
       <MDEditor
         value={value}
-        onChange={setValue}
+        onChange={(val) => setValue(val)}
         preview="edit"
         height={400}
         visibleDragbar={false}

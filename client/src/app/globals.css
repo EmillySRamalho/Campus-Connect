@@ -47,6 +47,10 @@
   100% { transform: scale(1); }
 }
 
+body{
+  overflow-y: auto;
+}
+
 .animate-like {
   animation: pop-like 0.25s ease-out;
 }

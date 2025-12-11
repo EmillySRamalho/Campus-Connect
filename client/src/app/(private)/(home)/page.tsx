@@ -29,9 +29,9 @@ export default function Home() {
           <LoadingPage />
         ) : (
           Array.isArray(posts) &&
-          posts?.map((post) => (
+          posts?.map((post, index) => (
             <PostCard
-              key={post.id}
+              key={`${post.id}_${index}`}
               title={post.title}
               content={post.content}
               created_at={post.createdAt}

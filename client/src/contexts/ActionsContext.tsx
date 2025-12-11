@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect, useContext, SetStateAction } from "react";
 
 import { loadPosts, likePosts, loadComments, removeLikePost, LoadMyPosts, GetSavedPosts } from "@/api/posts";
 import { IChallenge, IComment, IPost } from "@/types";
@@ -9,25 +9,27 @@ import { LoadChallenges } from "@/api/groups";
 interface IActionsContext {
     listPosts: (token: string) => Promise<any>
     loadingAction: boolean
-    posts: IPost[] | null
+    posts: IPost[] | []
     likeInPost: (post_id: string, token: string) => Promise<void>
     listComments: (post_id: string | undefined, token: string) => Promise<IComment[] | null>
     unlikePost: (user_id: string | undefined, post_id: string, token: string) => Promise<void>
     comment: IComment[] | null
     listMyPosts: (token: string) => Promise<any>
-    myPosts: IPost[] | null
+    myPosts: IPost[] | []
     postSaved: IPost[] | null
     listSavedPosts: (token: string) => Promise<void>
     listChallenges: (token: string, group_id: string) => Promise<any>
     challenge: IChallenge[] | null
+    setPosts: React.Dispatch<SetStateAction<IPost[] | []>>
+    setMyPosts: React.Dispatch<SetStateAction<IPost[] | []>>
 }
 
 export const ActionContext = createContext<IActionsContext | undefined>(undefined);
 
 export const ActionProvider = ({ children }: { children: React.ReactNode }) => {
     const [loadingAction, setLoadingAction] = useState<boolean>(false);
-    const [posts, setPosts] = useState<IPost[] | null>(null);
-    const [myPosts, setMyPosts] = useState<IPost[] | null>(null);
+    const [posts, setPosts] = useState<IPost[]>([]);
+    const [myPosts, setMyPosts] = useState<IPost[]>([]);
     const [postSaved, setPostSaved] = useState<IPost[] | null>(null);
     const [comment, setComments] = useState<IComment[] | null>(null);
     const [challenge, setChallenge] = useState<IChallenge[] | null>(null);
@@ -162,7 +164,9 @@ export const ActionProvider = ({ children }: { children: React.ReactNode }) => {
         listSavedPosts,
         postSaved,
         listChallenges,
-        challenge
+        challenge,
+        setPosts,
+        setMyPosts
     }
 
     return (

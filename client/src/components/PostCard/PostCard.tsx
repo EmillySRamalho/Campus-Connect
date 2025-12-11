@@ -86,6 +86,8 @@ export const PostCard = ({
 
       await SavePosts(postId, token)
 
+      await listSavedPosts(token);
+
     } 
     else {
       setSave(true)
@@ -122,7 +124,7 @@ export const PostCard = ({
             </div>
           </div>
         </span>
-        {user?.id === author.id && (
+        {author?.userId && user?.id === author?.userId && (
           <span>
             <PostTools
               type="editPost" //Tipo de ação que será feita ao abrir as ferramentas (editar post)

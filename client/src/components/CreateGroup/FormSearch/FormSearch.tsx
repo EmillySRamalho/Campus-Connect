@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { IStudent } from "@/types";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface IFormSearchProp {
@@ -34,6 +34,10 @@ export const FormSearch = ({
     }
   };
 
+  useEffect(() => {
+    console.log(selectedStudents)
+  }, [])
+
   return (
     <div>
       <div className="flex justify-between">
@@ -55,27 +59,27 @@ export const FormSearch = ({
         ) : (
           student?.map((s, index) => (
             <div
-              key={`${s.UserID}_${index}`}
+              key={`${s.id}_${index}`}
               className="mt-4 flex flex-col gap-1.5"
             >
               <div className="border flex flex-col p-1.5 rounded-[5px] w-full">
                 <span>
-                  <strong>Nome:</strong> {s.User.name}
+                  <strong>Nome:</strong> {s.name}
                 </span>
                 <span>
-                  <strong>Nome de usuário:</strong> {s.User.name_user}
+                  <strong>E-mail:</strong> {s.email}
                 </span>
-                <span>
+                {/* <span>
                   <strong>Curso:</strong> {s.course}
-                </span>
+                </span> */}
                 <Button
                   onClick={() => {
                     setSelectedStudents((prev) =>
-                      prev.find((p) => p.UserID === s.UserID)
+                      prev.find((p) => p.id === s.id)
                         ? prev 
                         : [...prev, s]
                     );
-                    toast.success(`Estudante, ${s.User.name_user}, adicionado a fila.`)
+                    toast.success(`Estudante, ${s.name} - ${s.id}, adicionado a fila.`)
                     }
                   }
                   variant="outline"

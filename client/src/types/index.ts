@@ -3,6 +3,7 @@ export interface IUser {
   name: string;
   name_user: string;
   email: string;
+  userId: string;
   role: string;
   bio: string;
 }
@@ -44,10 +45,10 @@ export interface IResponsesComment {
 }
 
 export interface IStudent {
-  UserID: number;
-  User: IUser;
-  course: string;
-  matricula: string;
+  id: string;
+  name: string;
+  email: string;
+  role: string;
 }
 
 // Grupos

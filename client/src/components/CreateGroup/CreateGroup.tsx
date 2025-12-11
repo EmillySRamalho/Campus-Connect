@@ -10,13 +10,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DialogType, IStudent } from "@/types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Textarea } from "../ui/textarea";
 import { ArrowBigRight } from "lucide-react";
 import { Spinner } from "../ui/spinner";
 import { FormSearch } from "./FormSearch/FormSearch";
 import { CreateNewGroup } from "@/api/groups";
-import { useActionContext } from "@/contexts/ActionsContext";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
@@ -36,7 +35,7 @@ export const CreateGroup = ({ type }: ICreateGroupProps) => {
   const handleCreateGroup = async () => {
     setLoading(true);
     try {
-      const members = selectedStudents.map((s: IStudent) => s.UserID);
+      const members = selectedStudents.map((s: IStudent) => s.id);
 
       const data = await CreateNewGroup(name, value, members, token);
 
