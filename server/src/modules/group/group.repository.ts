@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { TGroup } from "../../@types/group/group.type.js";
 import groupModel from "./group.model.js";
 
@@ -14,6 +15,17 @@ export const GroupRepository = {
         select: "name email role",
       },
     });
+  },
+
+  findByUser(id: string | undefined) {
+    return groupModel
+      .find({
+        $or: [
+          { members: new Types.ObjectId(id) },
+          { author: new Types.ObjectId(id) },
+        ],
+      })
+      .populate("members", "name email");
   },
 
   update(id: string, data: Partial<TGroup>) {

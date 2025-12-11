@@ -47,19 +47,14 @@ export async function ListGroupByTeacherService(userId: string) {
 }
 
 // Listar grupo de um participante
-export async function ListGroupByUserService(groupId: string, userId: string) {
-  const group = await GroupRepository.findById(groupId);
+export async function ListGroupByUserService(userId: string) {
+
+  const teacher = await TeacherRepository.findByUser(userId);
+
+  const group = await GroupRepository.findByUser(teacher?._id);
 
   if (!group) {
     throw new Error("Grupo não encontrado.");
-  }
-
-  const isMember = group.members?.some(
-    (member) => member._id.toString() === userId
-  );
-
-  if (!isMember) {
-    throw new Error("Usuário não é um membro.");
   }
 
   return {

@@ -69,7 +69,6 @@ export function ProfileService(user: TUser) {
     name_user: user.nameUser,
     role: user.role,
     email: user.email,
-    xp: user.xp,
     biography: user.biography,
   };
 

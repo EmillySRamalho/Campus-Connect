@@ -37,14 +37,10 @@ const UserSchema = new mongoose.Schema<TUser>({
     },
   ],
 
-  xp: {
-    type: Number,
-    default: 0
-  },
-
   role: {
     type: String,
-    enum: ["admin", "professor", "estudante", "usuário"],
+    enum: ["admin", "professor", "estudante", "user"],
+    default: "user"
   },
 });
 

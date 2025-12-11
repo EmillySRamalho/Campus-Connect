@@ -7,7 +7,7 @@ const groupRouter = Router();
 groupRouter.post("/group", authGuard, CreateGroupController);
 groupRouter.delete("/group/:id", authGuard, DeleteGroupController);
 groupRouter.get("/group/teacher/:id", authGuard, ListGroupByTeacherController);
-groupRouter.get("/group/user/:id", authGuard, ListGroupByUserController)
+groupRouter.get("/group/user", authGuard, ListGroupByUserController)
 groupRouter.patch("/edit/group/:id", authGuard, EditGroupDataController);
 
 

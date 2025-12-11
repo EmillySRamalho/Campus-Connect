@@ -100,9 +100,7 @@ export async function ListGroupByUserController(req: CustomRequest, res: Respons
 
     const userId = req.user._id;
 
-    const groupId = req.params.id;
-
-    const result = await ListGroupByUserService(groupId, userId);
+    const result = await ListGroupByUserService(userId);
 
     res.status(200).json(result.group);
 

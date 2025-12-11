@@ -8,6 +8,5 @@ export type TUser = {
   postsSaveds?: Types.ObjectId[];
   nameUser: string;
   biography?: string;
-  xp?: number;
-  role?: "admin" | "professor" | "estudante";
+  role?: "admin" | "professor" | "estudante" | "user";
 };
