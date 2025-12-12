@@ -7,6 +7,6 @@ export type TComment = {
     content: string;
     responses?: Types.ObjectId[];
     likes?: Types.ObjectId[];
-    liked: boolean;
+    liked?: boolean;
     createdAt?: Date;
 }
