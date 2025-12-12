@@ -4,7 +4,6 @@ import { TeacherRepository } from "../../teacher/teacher.repository.js";
 import { UserRepository } from "../../users/user.repository.js";
 import postModel from "../post.model.js";
 import { PostRepository } from "../post.repository.js";
-import { GroupRepository } from "../../group/group.repository.js";
 
 // Listar postagens
 export async function ListAllPostService(userId: string) {
@@ -85,7 +84,7 @@ export async function ListAuthorPostsService(authorId: string) {
       title: post.title,
       content: post.content,
       tags: post.tags,
-      likes: post.likes,
+      likes: post.likes?.length,
       liked: liked,
       saved: saved,
     };

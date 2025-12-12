@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { CustomRequest } from "../../middlewares/AuthGuard.js";
 import { CreateGroupService, DeleteGroupService, EditGroupDataService } from "./services/GroupAction.service.js";
-import { ListGroupByTeacherService, ListGroupByUserService } from "./services/GroupList.service.js";
+import { ListGroupByTeacherService, ListGroupByUserService, ListGroupDetailService } from "./services/GroupList.service.js";
 
 // Criar grupo
 export async function CreateGroupController(req: CustomRequest, res: Response) {
@@ -19,7 +19,7 @@ export async function CreateGroupController(req: CustomRequest, res: Response) {
 
     res.status(500).json({
       msg: "Erro interno do servidor...",
-      err: err.message,
+      err: err,
     });
 
   }
@@ -103,6 +103,29 @@ export async function ListGroupByUserController(req: CustomRequest, res: Respons
     const result = await ListGroupByUserService(userId);
 
     res.status(200).json(result.group);
+
+  }
+  catch(err: any){
+
+    res.status(500).json({
+      msg: "Erro interno do servidor...",
+      err: err.message,
+    });
+
+  }
+}
+
+// Listar detalhes de um grupo
+export async function ListGroupDetailController(req: CustomRequest, res: Response){
+  try{
+    
+    const groupId = req.params.id;
+
+    const userId = req.user._id;
+
+    const result = await ListGroupDetailService(groupId, userId);
+
+    res.status(200).json(result);
 
   }
   catch(err: any){

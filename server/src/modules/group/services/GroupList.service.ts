@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { TAuthor } from "../../../@types/post/post.type.js";
 import { TeacherRepository } from "../../teacher/teacher.repository.js";
 import { UserRepository } from "../../users/user.repository.js";
@@ -60,4 +61,55 @@ export async function ListGroupByUserService(userId: string) {
   return {
     group,
   };
+}
+
+// Listar detalhes do grupo
+export async function ListGroupDetailService(groupId: string, userId: string){
+
+  const author = await TeacherRepository.findByUser(userId);
+
+  const user = await UserRepository.findById(userId);
+
+  if(!author || !user){
+    throw new Error("Usuário não encontrado.");
+  }
+
+  const group = await GroupRepository.findById(groupId);
+
+  if(!group){
+    throw new Error("Grupo não encontrado.");
+  }
+
+  const isUserInGroup = group.members?.some(userId => userId._id.equals(user._id));
+
+  if(!isUserInGroup){
+    throw new Error("Usuário não participa do grupo.");
+  }
+
+  const authorRes = group.author as unknown as TAuthor;
+  const userRes = authorRes.user;
+
+
+  const dataFormated = {
+    id: group._id,
+    name: group.name,
+    description: group.description,
+    author: userRes ? {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    } : null,
+    members: group.members?.map((m: any) => ({
+      id: m._id,
+      name: m.name,
+      email: m.email,
+      role: m.role
+    }))
+  }
+
+  return {
+    dataFormated
+  }
+
 }

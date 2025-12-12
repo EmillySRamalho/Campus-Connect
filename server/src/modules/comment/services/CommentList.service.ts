@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { PostRepository } from "../../posts/post.repository.js";
 import { CommentRepository } from "../comment.repository.js";
 
@@ -9,7 +10,7 @@ type TResponseAuthor = {
 }
 
 // Listar comentários de uma postagem
-export async function ListCommentsByPostService(postId: string){
+export async function ListCommentsByPostService(postId: string, userId: string){
   
   const post = await PostRepository.findById(postId);
 
@@ -22,6 +23,9 @@ export async function ListCommentsByPostService(postId: string){
   const formatedData = comments.map((comment) => {
     const author = comment.author as unknown as TResponseAuthor;
 
+    const userObjectId = new Types.ObjectId(userId);
+    const liked = comment.likes?.some((id) => id.equals(userObjectId));
+
     return {
       id: comment._id,
       author: author ? {
@@ -32,7 +36,8 @@ export async function ListCommentsByPostService(postId: string){
       } : null,
       content: comment.content,
       likes: comment.likes?.length,
-      createdAt: comment.createdAt
+      createdAt: comment.createdAt,
+      liked: liked
     }
   });
 

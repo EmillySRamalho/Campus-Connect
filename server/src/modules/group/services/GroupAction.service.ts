@@ -32,11 +32,13 @@ export async function CreateGroupService({
 
   const membersObjectId = members.map((id) => new Types.ObjectId(id));
 
+  const authorUserObjectId = new Types.ObjectId(authorId);
+
   const data = {
     author: authorObjectId,
     name,
     description,
-    members: [...membersObjectId, authorObjectId],
+    members: [...membersObjectId, authorUserObjectId],
   };
 
   const newGroup = await GroupRepository.create(data);

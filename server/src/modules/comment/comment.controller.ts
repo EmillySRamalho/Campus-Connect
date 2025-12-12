@@ -76,7 +76,9 @@ export async function ListCommentsByPostController(req: CustomRequest, res: Resp
     try{
         const postId = req.params.id;
 
-        const result = await ListCommentsByPostService(postId);
+        const userId = req.user._id;
+
+        const result = await ListCommentsByPostService(postId, userId);
 
         res.status(200).json({ msg: result.comments });
     }

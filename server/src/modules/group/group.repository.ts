@@ -4,7 +4,16 @@ import groupModel from "./group.model.js";
 
 export const GroupRepository = {
   findById(id: string) {
-    return groupModel.findById(id);
+    return groupModel.findById(id).populate({
+      path: "author",
+      populate: {
+        path: "user",
+        select: "name email role",
+      },
+    }).populate({
+      path: "members",
+      select: "name email role"
+    });
   },
 
   findByAuthor(id: string) {
