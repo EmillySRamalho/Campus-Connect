@@ -16,6 +16,9 @@ import { useEffect, useState } from "react";
 import { AiOutlinePartition } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import { FaRegBookmark } from "react-icons/fa";
+import { useAuthContext } from "@/contexts/AuthContext";
+import { toast } from "sonner";
+import { useActionContext } from "@/contexts/ActionsContext";
 
 export const NavbarClient = () => {
   const router = useRouter();
@@ -56,8 +59,12 @@ export const NavbarClient = () => {
       item: "Postagens Salvas",
       icon: <FaRegBookmark />,
       onClick: () => router.push("posts-saved"),
-    }
+    },
   ];
+  const { notification } = useActionContext();
+  notification.forEach((n: any) => {
+    toast(n.message);
+  });
 
   // Items para o desktop
   const itemsDesktop = [
@@ -80,7 +87,7 @@ export const NavbarClient = () => {
       item: "Postagens Salvas",
       icon: <FaRegBookmark />,
       onClick: () => router.push("posts-saved"),
-    }
+    },
   ];
 
   const [shrunk, setShrunk] = useState(false);
@@ -127,7 +134,10 @@ export const NavbarClient = () => {
           <Link href={"/"}>
             <h1 className="text-[20px] flex items-center gap-3 justify-center font-bold md:text-2xl">
               <span>
-                Campus <span className="dark:text-blue-300 text-blue-600">Connect</span>
+                Campus{" "}
+                <span className="dark:text-blue-300 text-blue-600">
+                  Connect
+                </span>
               </span>
               <AiOutlinePartition />
             </h1>
