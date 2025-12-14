@@ -61,7 +61,7 @@ export default function GroupDetail() {
               <span className="flex justify-between items-center">
                 <h1>Atividades da turma</h1>
                 {user?.role === "professor" && (
-                  <ModalPosts group_id={String(group_id)} />
+                  <ModalPosts  group_id={String(group_id)} />
                 )}
               </span>
               <hr className="my-5" />

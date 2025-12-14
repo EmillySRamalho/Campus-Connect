@@ -37,8 +37,8 @@ interface IModalPostsProps {
   isEnterChallenge?: boolean;
   dataXP?: number;
   author?: string;
-  typeChallenge: string;
-  data: any;
+  typeChallenge?: string;
+  data?: any;
 }
 
 export function ModalPosts({
